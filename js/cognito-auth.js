@@ -52,18 +52,26 @@ var WildRydes = window.WildRydes || {};
      * Cognito User Pool functions
      */
 
-    function register(email, password, onSuccess, onFailure) {
+    function register(email, password, phoneNumber, onSuccess, onFailure) {
+        console.log('phoneNumber',phoneNumber)
         var dataEmail = {
             Name: 'email',
             Value: email
         };
+        var phoneData = {
+            Name: 'phone_number',
+            Value: phoneNumber
+        }
         var attributeEmail = new AmazonCognitoIdentity.CognitoUserAttribute(dataEmail);
+        var phoneAttribute = new AmazonCognitoIdentity.CognitoUserAttribute(phoneData);
+        console.log(phoneAttribute)
 
-        userPool.signUp(toUsername(email), password, [attributeEmail], null,
+        userPool.signUp(toUsername(email), password, [attributeEmail,phoneAttribute], null,
             function signUpCallback(err, result) {
                 if (!err) {
                     onSuccess(result);
                 } else {
+                    console.log(err)
                     onFailure(err);
                 }
             }
@@ -131,6 +139,7 @@ var WildRydes = window.WildRydes || {};
 
     function handleRegister(event) {
         var email = $('#emailInputRegister').val();
+        var phone = $('#phoneInputRegister').val();
         var password = $('#passwordInputRegister').val();
         var password2 = $('#password2InputRegister').val();
 
@@ -148,7 +157,7 @@ var WildRydes = window.WildRydes || {};
         event.preventDefault();
 
         if (password === password2) {
-            register(email, password, onSuccess, onFailure);
+            register(email, password, phone, onSuccess, onFailure);
         } else {
             alert('Passwords do not match');
         }

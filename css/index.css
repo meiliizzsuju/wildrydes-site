@@ -188,7 +188,7 @@ header img{
 }
 
 
-input[type=text], input[type=password], input[type=email] {
+input[type=text], input[type=password], input[type=email], input[type=phone_number] {
     width: 100%;
     padding: 12px 0;
     margin: 10px 0 30px;
